@@ -21,7 +21,7 @@ list \itemize{
 Method summary for ViSigrid object.
 }
 \seealso{
-\code{\linkS4class{ViSigrid}}, \code{\link{buildViSiGrid}},\code{\linkS4class{ViSibook}}.
+\code{\linkS4class{ViSigrid}}, \code{\link{visielse}},\code{\linkS4class{ViSibook}}.
 and see \code{\link{plot-ViSigrid-method}} for examples.
 }
 

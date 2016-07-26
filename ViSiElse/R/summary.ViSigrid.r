@@ -10,7 +10,7 @@
 #' \item{ \strong{ punctuals} }{ summary of punctual actions (typeA=="p").}
 #' \item{ \strong{ longs} }{  summary of long actions (typeA=="p"). }
 #' }
-#' @seealso \code{\linkS4class{ViSigrid}}, \code{\link{buildViSiGrid}},\code{\linkS4class{ViSibook}}.
+#' @seealso \code{\linkS4class{ViSigrid}}, \code{\link{visielse}},\code{\linkS4class{ViSibook}}.
 #' and see \code{\link{plot-ViSigrid-method}} for examples.
 setMethod( 	f = "summary" , 
             signature = "ViSigrid" , 

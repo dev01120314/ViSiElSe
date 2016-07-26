@@ -11,11 +11,11 @@
   Fontsize.label.Action = 11, Fontsize.label.Time = 11,
   Fontsize.label.color = 9, col.main = "black", col.grid = "grey",
   colgreenzone = "green", colblackzone = "black", alphainf = 0.8,
-  alphasup = 0.6, alphaZones = 0.2, vp0h = 0.6, vp0w = 0.6,
-  linA = 0.7, rcircle = 15, lwdline = 2, lwd.grid = 1, lty.grid = 1)
+  alphasup = 1, alphaZones = 0.2, vp0h = 0.6, vp0w = 0.6, linA = 0.7,
+  rcircle = 15, lwdline = 2, lwd.grid = 1, lty.grid = 1)
 }
 \arguments{
-\item{x}{A \code{ViSigrid} object built using the \code{\link{buildViSiGrid}} function.}
+\item{x}{A \code{ViSigrid} object built using the \code{\link{visielse}} function.}
 
 \item{scal.unit.tps}{Unity of time for the grey grid legend.}
 
@@ -69,25 +69,8 @@ of raw data during experimental observations of the realization of a procedure
 like a medical algorithm. It graphically presents an overview of individuals
 and group actions usually acquired from timestamps during video recorded sessions.
 }
-\examples{
-intubation
-## Construction of the ViSiBook for the data intubation
-vars <- c("time_in_intub","time_insert_probe","time_out_intub","delay_intub_prob") 
-label <- c( "the blade is in the mouth", "Insertion of the tube into the mouth",
-           "The blade is out of the mouth","Blade in the month - Tube is inserted")
-typeA <- c( "p","p","p","l")
-showorder <- c( 1,2,4,3)
-deb   <- c( NA, NA,NA,"time_in_intub")
-fin <- c( NA,NA,NA,"time_insert_probe")
-bookdataframe <- data.frame(vars,label,typeA,showorder,deb,fin)
-bookintubation <- ConvertoViSibook(bookdataframe)
-plot(bookintubation)
-##
-x <- buildViSiGrid( X = intubation, book = bookintubation,pixel = 5 )
-plot( x )
-}
 \seealso{
 \code{\linkS4class{ViSigrid}}, \code{\linkS4class{ViSibook}},
- \code{\link{buildViSiGrid}}, \code{\link{changeShoworder-ViSibook-method}}.
+ \code{\link{visielse}}.
 }
 
