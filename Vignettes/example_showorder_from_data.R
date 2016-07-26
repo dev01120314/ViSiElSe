@@ -2,6 +2,9 @@
 
 library(ViSiElse)
 source('C:/ViSiElSe/Vignettes/showorder_from_data.R')
+source('C:/ViSiElSe/Vignettes/.book_showorder_from_data.R')
+source('C:/ViSiElSe/Vignettes/root_visibook.R')
+source('C:/ViSiElSe/Vignettes/convert_visibook_graph.R')
 
 # Dataset :
           coffee <- c( 1,1,1)
