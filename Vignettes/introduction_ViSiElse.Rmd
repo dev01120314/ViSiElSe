@@ -26,7 +26,7 @@ The __minimum structure for a ViSibook__ object must give for __each action__ it
 
 Beyond the minimum structure __green zones or/and black zones__ can be defined to help to __visualize if a behaviour is realized on time__.
 
-__A ViSigrid object is built using the function buildViSiGrid with at least a ViSibook and data of individual realization times for each punctual action__.
+__A ViSigrid object is built using the function visielse with at least a ViSibook and data of individual realization times for each punctual action__.
 
 
 ------
@@ -72,7 +72,6 @@ The process time restrictions are:
   
  
 ```{r,fig.show='asis',fig.width=7}
-    rm(list = ls())
     library(ViSiElse)
     vars <- c( "Action1" , "Action2" , "Action3" , "Action4" , "Action5" , 
                "Action6" , "Action7","Action8")
@@ -200,17 +199,17 @@ colnames(Xsup) <- colnames(X)
 head(Xsup)
 ```
 
-## Building a ViSiGrid object 
+## ViSiElse
 
-### buildViSiGrid + plot 
+### 
 With __a ViSibook and observational data__ stored as above, to obtain a representation of
-the process we need to: 
+the process the visielse function : 
 
- * __Create a ViSigrid__ object with the function buildViSiGrid.
+ * __Create a ViSigrid__ object.
  * __Plot__ this object.
 
 ```{r,fig.show='asis',fig.width=7, fig.height=7}
-x <-  buildViSiGrid( X = X, book = book, pixel = 1, Xsup = Xsup )
+x <-  visielse( X = X, book = book, pixel = 1, Xsup = Xsup )
 plot(x)
 
 ```
@@ -233,11 +232,11 @@ _
 Here the action 1 occurred within the first second so pixel should be set small enough.
 
 ```{r,fig.show='asis',fig.width=7, fig.height=7}
-x <-  buildViSiGrid( X = X, book = book, pixel = 5, Xsup = Xsup )
+x <-  visielse( X = X, book = book , pixel = 5, Xsup = Xsup )
 plot(x, main = "PIXEL = 5")
-x <-  buildViSiGrid( X = X, book = book, pixel = 20, Xsup = Xsup )
+x <-  visielse( X = X, book = book, pixel = 20, Xsup = Xsup )
 plot(x, main = "PIXEL = 20")
-x <-  buildViSiGrid( X = X, book = book, pixel = 1, Xsup = Xsup )
+x <-  visielse( X = X, book = book, pixel = 1, Xsup = Xsup )
 plot(x, main = "PIXEL = 1")
 ```
 
@@ -262,11 +261,11 @@ For a long action it is calculated on the difference between the beginning punct
 _
 
 ```{r,fig.show='asis',fig.width=7, fig.height=7}
-x <-  buildViSiGrid( X = X, book = book, pixel = 1, Xsup = Xsup )
+x <-  visielse( X = X, book = book, pixel = 1, Xsup = Xsup )
 plot(x, main = "informer =  Median")
-x <-  buildViSiGrid( X = X, book = book, pixel = 1, Xsup = Xsup,  informer = "mean" )
+x <-  visielse( X = X, book = book, pixel = 1, Xsup = Xsup,  informer = "mean" )
 plot(x, main = "informer =  Mean")
-x <-  buildViSiGrid( X = X, book = book, pixel = 1, Xsup = Xsup,  informer = NULL )
+x <-  visielse( X = X, book = book, pixel = 1, Xsup = Xsup,  informer = NULL )
 plot(x, main = "informer =  NULL")
 ```
 
@@ -280,11 +279,11 @@ The origin of the graphic can be set using the parameter t_0. There is two ways 
 
 
 ```{r,fig.show='asis',fig.width=7, fig.height=7}
-x <-  buildViSiGrid( X = X, book = book, pixel = 1, Xsup = Xsup )
+x <-  visielse( X = X, book = book, pixel = 1, Xsup = Xsup )
 plot(x, main = "t_0 =  0")
-x <-  buildViSiGrid( X = X, book = book, pixel = 1,  t_0 = 10 )
+x <-  visielse( X = X, book = book, pixel = 1,  t_0 = 10 )
 plot(x, main = "t_0 = 10")
-x <-  buildViSiGrid( X = X, book = book, pixel = 1,  t_0 = "Action1" )
+x <-  visielse( X = X, book = book, pixel = 1,  t_0 = "Action1" )
 plot(x, main = "t_0 = Action1")
 ```
 
@@ -294,7 +293,7 @@ book_change <- changeShoworder( book, c(2,3,4,5,6) )
 book_change[5,7] <- NA
 book_change[5,8] <- NA
 book_change[5,9] <- NA
-x <-  buildViSiGrid( X = X, book = book_change, pixel = 1,  t_0 = "Action1" )
+x <-  visielse( X = X, book = book_change, pixel = 1,  t_0 = "Action1" )
 plot(x, main = "t_0 = Action1")
 ```
 
@@ -307,9 +306,9 @@ plot(x, main = "t_0 = Action1")
   * dens:  __Proportion of individuals__ is considered. This setting is useful when representing groups.  When group is defined and method set to "cut" or "within", this proportion is calculated regarding each represented group.
   
 ```{r,fig.show='asis',fig.width=7, fig.height=7}
-x <-  buildViSiGrid( X = X, book = book, pixel = 1, Xsup = Xsup )
+x <-  visielse( X = X, book = book, pixel = 1, Xsup = Xsup )
 plot(x, main = " quantity = N")
-x <-  buildViSiGrid( X = X, book = book, pixel = 1, Xsup = Xsup,  quantity = "dens" )
+x <-  visielse( X = X, book = book, pixel = 1, Xsup = Xsup,  quantity = "dens" )
 plot(x, main = " quantity = dens")
 ```
 
@@ -318,9 +317,9 @@ plot(x, main = " quantity = dens")
 The parameter sorted.line allows __long actions to be sorted by starting time__.
 
 ```{r,fig.show='asis',fig.width=7, fig.height=7}
-x <-  buildViSiGrid( X = X, book = book, pixel = 1, Xsup = Xsup )
+x <-  visielse( X = X, book = book, pixel = 1, Xsup = Xsup )
 plot(x, main = " sorted.line = TRUE")
-x <-  buildViSiGrid( X = X, book = book, pixel = 1, Xsup = Xsup, sorted.line = FALSE )
+x <-  visielse( X = X, book = book, pixel = 1, Xsup = Xsup, sorted.line = FALSE )
 plot(x, main = "sorted.line = FALSE")
 ```
 
@@ -336,14 +335,14 @@ ViSiElse offers the possibility to represent two groups of individuals, and prop
 
 ```{r,fig.show='asis',fig.width=7, fig.height=7}
 group = c(rep( "G1", 15),rep("G2",35))
-x <-  buildViSiGrid( X = X, book = book, pixel = 1, group = group, method = "cut" )
+x <-  visielse( X = X, book = book, pixel = 1, group = group, method = "cut" )
 plot(x, main = " Method = cut ")
-x <-  buildViSiGrid( X = X, book = book, pixel = 1, group = group, method = "join" )
+x <-  visielse( X = X, book = book, pixel = 1, group = group, method = "join" )
 plot(x, main = " Method = join ")
-x <-  buildViSiGrid( X = X, book = book, pixel = 1, group = group, method = "within", 
+x <-  visielse( X = X, book = book, pixel = 1, group = group, method = "within", 
                      grwithin = "G1"  )
 plot(x, main = " Method = within ; group1 ")
-x <-  buildViSiGrid( X = X, book = book, pixel = 1, group = group, method = "within", 
+x <-  visielse( X = X, book = book, pixel = 1, group = group, method = "within", 
                      grwithin = "G2", quantity = "dens"  )
 plot(x, main = " Method = within ; group2 / density of ind ")
 ```
@@ -363,10 +362,10 @@ Results of the tests are __represented by a star only when the resulted p-value 
 
 
 ```{r,fig.show='asis',fig.width=7, fig.height=7}
-x <-  buildViSiGrid( X = X, book = book, group = group, method = "cut" , pixel = 1, 
+x <-  visielse( X = X, book = book, group = group, method = "cut" , pixel = 1, 
                      tests = TRUE )
 plot(x, main = " test, threshold p-value 0.01")
-x <-  buildViSiGrid( X = X, book = book, group = group, method = "cut" , pixel = 1, 
+x <-  visielse( X = X, book = book, group = group, method = "cut" , pixel = 1, 
                      tests = TRUE, threshold.test = 0.5  )
 plot(x, main = " test, threshold p-value 0.5")
 ```
@@ -375,10 +374,10 @@ plot(x, main = " test, threshold p-value 0.5")
 
 When sorted.line is TRUE, the parameter decrgr2 allows long actions of the second group to be plotted in decreasing order by starting times.
 ```{r,fig.show='asis',fig.width=7, fig.height=7}
-x <-  buildViSiGrid( X = X, book = book, group = group, method = "cut" , pixel = 1, 
+x <-  visielse( X = X, book = book, group = group, method = "cut" , pixel = 1, 
                      Xsup = Xsup )
 plot(x, main = " decrgr2=FALSE")
-x <-  buildViSiGrid( X = X, book = book, group = group, method = "cut" , pixel = 1, 
+x <-  visielse( X = X, book = book, group = group, method = "cut" , pixel = 1, 
                      Xsup = Xsup, decrgr2 = TRUE )
 plot(x, main = "decrgr2 = TRUE")
 ```

@@ -39,9 +39,9 @@ stores the data corresponding to those actions.}
 
 \item{\code{testsP}}{A \code{"vector"} Results of tests p.value<threshold.test.}
 
-\item{\code{parameters}}{A \code{"list"}. It stores the parameters put in the \code{\link{buildViSiGrid}} function.}
+\item{\code{parameters}}{A \code{"list"}. It stores the parameters put in the \code{\link{visielse}} function.}
 }}
 \seealso{
-\code{\link{buildViSiGrid}}, \code{\link{plot,ViSigrid-method}}, \code{\linkS4class{ViSibook}}
+\code{\link{visielse}}, \code{\link{plot,ViSigrid-method}}, \code{\linkS4class{ViSibook}}
 }
 

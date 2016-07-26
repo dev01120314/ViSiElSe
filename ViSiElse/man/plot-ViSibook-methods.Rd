@@ -19,7 +19,6 @@
 Method plot for ViSibook object.
 }
 \seealso{
-\code{\linkS4class{ViSibook}}, \code{\link{buildViSiGrid}}, 
-\code{\link{changeShoworder-ViSibook-method}} and see \code{\link{plot-ViSigrid-method}} for examples.
+\code{\linkS4class{ViSibook}}, \code{\link{visielse}}
 }
 

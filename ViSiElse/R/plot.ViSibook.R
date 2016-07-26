@@ -8,8 +8,7 @@
 #' @param x a ViSibook object.
 #' @param ncharmax is the number maximum of plotted character for the labels of punctual actions, set to 10.
 #' @param ncharmaxdelay number maximum of  plotted character for the labels of long actions, set to 50.
-#' @seealso \code{\linkS4class{ViSibook}}, \code{\link{buildViSiGrid}}, 
-#' \code{\link{changeShoworder-ViSibook-method}} and see \code{\link{plot-ViSigrid-method}} for examples.
+#' @seealso \code{\linkS4class{ViSibook}}, \code{\link{visielse}}
 setMethod( f = "plot",
            signature = "ViSibook",
            definition = function(x, ncharmax = 10, ncharmaxdelay  =50 ) {
