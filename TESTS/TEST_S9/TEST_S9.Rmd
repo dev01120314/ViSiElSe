@@ -1,0 +1,113 @@
+---
+title: "TESTS_DEV - S9 Changement du temps d’origine –> uniquement pour global"
+author: "Nastasia Fouret"
+date: "12 mai 2016"
+output: html_document
+---
+```{r}
+book <- read.csv2("I:/CEPOI/COMMUN/SIMULATION/ViSElSe/TESTDEV/TEST_S9/data/bookvar4.csv",         na.strings = " ",  stringsAsFactors = FALSE)
+library(ViSiElse)
+Action1 <- c(0, rlnorm(99))
+Action2 <- Action1 + (rbeta(n = 100, shape=0.5,shape2=.7)^3  )*30 + 10
+Action3 <- Action2 + rnorm(100, mean = 20, sd = 2)
+id <- c(1:100)
+data<- as.data.frame( cbind(id=id,Action1=Action1,Action2=Action2, Action3=Action3))
+```
+## ViSigrid
+```{r}
+data
+vi <-visielse( X=data, pixel=1)
+plot(vi,alphaZones = 0.5)
+plot(vi@book)
+```
+
+## ViSigrid
+```{r}
+vi <-visielse( X=data, book=book,pixel=1 )
+vi@informers
+plot(vi,alphaZones = 0.5)
+```
+
+## TIme 0 = Action 1
+
+```{r}
+# TIme 0 = Action 1
+vi <-visielse( X=data, book=book,pixel=1, t_0 = "Action1" )
+plot(vi,alphaZones = 0.5 , scal.unit.tps = 5)
+book
+```
+
+## Changement type black zone
+
+
+```{r}
+book$BZLtype[4]<- "span"
+book$BZAfterFin[5]<- 30
+book$BZAfterFin[4]<- 15
+vi <-visielse( X=data, book=book,pixel=1, t_0 = "Action1" )
+plot(vi,alphaZones = 0.5)
+```
+
+# Autre jeu d'actions
+
+```{r}
+Action1 <- c(0, rlnorm(99))
+Action2 <- Action1 + 10+ runif(100)*5
+Action3 <- Action2 + 15 + 10+ runif(100)*5
+id <- c(1:100)
+data<- as.data.frame( cbind(id=id,Action1=Action1,Action2=Action2, Action3=Action3))
+```
+
+## ViSigrid
+```{r}
+vi <-visielse( X=data, book=book,pixel=1 )
+plot(vi,alphaZones = 0.5 , scal.unit.tps = 5)
+```
+
+## TIme 0 = Action 1
+
+```{r}
+vi <-visielse( X=data, book=book,pixel=1, t_0 = "Action1" )
+plot(vi,alphaZones = 0.5)
+```
+
+
+# Autre jeu d'actions 2
+
+```{r}
+Action1 <- c(1:20)
+Action2 <- Action1 + 10+ runif(20)*5
+Action3 <- Action2 + 15 + 10+ runif(20)*5
+id <- c(1:100)
+data<- as.data.frame( cbind(id=id,Action1=Action1,Action2=Action2, Action3=Action3))
+```
+
+## ViSigrid
+```{r}
+vi <-visielse( X=data, book=book,pixel=1,doplot=FALSE)
+plot(vi,alphaZones = 0.5)
+```
+
+## TIme 0 = Action 1
+
+```{r}
+# TIme 0 = Action 1
+vi <-visielse( X=data, book=book,pixel=1, t_0 = "Action1",doplot=FALSE )
+plot(vi,alphaZones = 0.5)
+```
+
+
+## TIme 0 = Action 2
+
+```{r}
+vi <-visielse( X=data, book=book,pixel=5, t_0 = "Action2")
+```
+
+```{r}
+vi <-visielse( X=data, book=book,pixel=1, t_0 = "Action2")
+```
+
+```{r}
+vi <-visielse( X=data, book=book,pixel=10, t_0 = "Action2")
+plot(vi,alphaZones = 0.5, scal.unit.tps = 5)
+```

@@ -1,0 +1,4 @@
+vars;label;typeA;showorder;deb;fin;GZDeb;GZFin;Repetition;BZBeforeDeb;BZBeforeFin;BZAfterDeb;BZAfterFin;BZLong;BZLtype
+Action1;Action1;p;1;;;5;7;;0;3;10;inf;;
+Action3;Action3;p;4;;;5,5;12;;;;;;;
+Delay_1_3;Delay_1_3;l;5;Action1;Action3;;;;;;;;6;span

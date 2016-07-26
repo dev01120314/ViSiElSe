@@ -1,0 +1,104 @@
+---
+title: "TESTS_DEV - S2 Respect de la chronologie des actions dans le book"
+author: "Nastasia Fouret"
+date: "24 Juin 2016"
+output: html_document
+---
+
+
+# Jeu de Données 1
+```{r, echo=FALSE}
+book <- read.csv("C:/Users/MED1NOGHR16/Desktop/ViSiElSE/TESTDEV/TEST_S2/data/bookvar.csv", sep=";", na.strings="", stringsAsFactors=FALSE)
+data <- read.csv("C:/Users/MED1NOGHR16/Desktop/ViSiElSE/TESTDEV/TEST_S2/data/data.csv", dec=",",sep=";", na.strings="", stringsAsFactors=FALSE)
+library(ViSiElse)
+```
+
+```{r}
+vi <- visielse( X=data, pixel = 0.5, doplot = FALSE)
+plot( vi, scal.unit.tps = 10)
+plot(vi@book)
+```
+
+
+# Jeu de Données 2
+```{r, echo=FALSE}
+book <- read.csv("C:/Users/MED1NOGHR16/Desktop/ViSiElSE/TESTDEV/TEST_S2/data/bookvar2.csv", sep=";", na.strings="", stringsAsFactors=FALSE)
+data <- read.csv("C:/Users/MED1NOGHR16/Desktop/ViSiElSE/TESTDEV/TEST_S2/data/data.csv", dec=",",sep=";", na.strings="", stringsAsFactors=FALSE)
+library(ViSiElse)
+```
+
+```{r}
+book[order(book$showorder),c(1,4)]
+vi <- visielse( X=data, book=book,pixel = 0.5, doplot = FALSE , informer = NULL)
+plot( vi, scal.unit.tps = 10)
+plot(vi@book)
+```
+
+# Jeu de Données 3
+
+Nombre d’actions Ponctuelles	20
+
+Nombre d’actions longues	19
+
+Nombre d’individus	100
+
+## Check list
+
+-Suit l’ordre dans la colonne showorder du book
+
+-Plot uniquement les actions avec un showorder
+
+
+```{r, echo=FALSE}
+book <- read.csv("C:/Users/MED1NOGHR16/Desktop/ViSiElSE/TESTDEV/TEST_S2/data/bookvar3.csv", sep=";", na.strings="", stringsAsFactors=FALSE)
+data <- read.csv("C:/Users/MED1NOGHR16/Desktop/ViSiElSE/TESTDEV/TEST_S2/data/data.csv", dec=",",sep=";", na.strings="", stringsAsFactors=FALSE)
+library(ViSiElse)
+```
+
+```{r}
+colnames(book)
+book[order(book$showorder),c(2,5)]
+vi <- visielse( X=data, book=book,pixel = 0.5, doplot = FALSE , informer = NULL)
+plot( vi, scal.unit.tps = 10)
+plot(vi@book)
+```
+
+
+```{r}
+book <- read.csv("C:/Users/MED1NOGHR16/Desktop/ViSiElSE/TESTDEV/TEST_S2/data/bookvar4.csv", sep=";", na.strings="", stringsAsFactors=FALSE)
+data <-as.data.frame(cbind(seq(1,9), c(4,4,4,5,5,5,6,6,6),c(10,9,11,10,9,11,10,9,11) ))
+colnames(data) <- c("id" ,book$vars[which(book$typeA == "p")])
+library(ViSiElse)
+```
+
+# Jeu de Donnée 1
+
+```{r}
+vi <- visielse( X=data, book=book, pixel= 0.5, informer=NULL, doplot=FALSE)
+plot(vi@book)
+plot(vi)
+vi <- visielse( X=data, book=book, pixel= 0.5)
+vi <- visielse( X=data, book=book, pixel= 0.5 , informer = "mean")
+group <- c(1,1,1,1,1,1,2,2,2)
+vi <- visielse( X=data, book=book, group=group, method= "within", pixel= 0.5 , informer = "mean")
+```
+
+# En changant d'ordre
+
+```{r}
+book$showorder <- c(2,NA,1)
+vi <- visielse( X=data, book=book, pixel = 0.5, doplot = FALSE)
+plot( vi, scal.unit.tps = 1)
+plot(vi@book)
+```
+
+# En prenant un sous emsemble des datas
+
+```{r}
+data<-data[c(1,2,3),]
+data
+vi <- visielse( X=data, book=book, pixel= 2, informer=NULL)
+plot(vi, scal.unit.tps = 2)
+data
+vi@MATp
+```

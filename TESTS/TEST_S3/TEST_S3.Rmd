@@ -1,0 +1,73 @@
+---
+title: "TESTS_DEV - S3 Représentation du nombre d’individus dans les pixels"
+author: "Nastasia Fouret"
+date: "22 Juin 2016"
+output: html_document
+---
+# Jeu de données 1
+
+```{r, echo=FALSE}
+book <- read.csv("C:/Users/MED1NOGHR16/Desktop/ViSiElse/TESTDEV/TEST_S3/data/bookvar4.csv", sep=";", na.strings="", stringsAsFactors=FALSE)
+data <- read.csv("C:/Users/MED1NOGHR16/Desktop/ViSiElse/TESTDEV/TEST_S3/data/data5.csv", dec=",",sep=";", na.strings="", stringsAsFactors=FALSE)
+library(ViSiElse)
+```
+
+## quantity = "N"
+
+```{r, echo=TRUE}
+table(data[,2])
+vi <- visielse( X=data, book=book, pixel= 0.5, informer=NULL)
+plot(vi, scal.unit.tps = 1)
+vi <- visielse( X=data, book=book, pixel= 0.1, informer=NULL)
+plot(vi, scal.unit.tps = 1)
+vi <- visielse( X=data, book=book, pixel= 1, informer=NULL, ncolvect = 14)
+plot(vi, scal.unit.tps = 1)
+```
+
+### Group <= 15 et >15
+
+```{r, echo=TRUE}
+
+group<- as.numeric(data[,3] <=15)
+vi <- visielse( X = data, book = book, group = group, method = "within" , pixel=1 ,tests=FALSE, informer=NULL)
+vi <- visielse( X = data, book = book, group = group, method = "within" ,grwithin = 1, pixel=1 ,tests=FALSE, informer=NULL)
+
+```
+
+## quantity = "dens"
+```{r, echo=TRUE}
+vi <- visielse( X=data, book=book, pixel= 0.5, informer=NULL,quantity = "dens",doplot=FALSE)
+plot(vi, scal.unit.tps = 1)
+vi <- visielse( X=data, book=book, pixel= 0.1, informer=NULL,quantity = "dens",doplot=FALSE)
+plot(vi, scal.unit.tps = 1)
+vi <- visielse( X=data, book=book, pixel= 1, informer=NULL, ncolvect = 14,quantity = "dens",doplot=FALSE)
+plot(vi, scal.unit.tps = 1)
+```
+
+# Jeu de données 2
+
+```{r, echo=FALSE}
+book <- read.csv("C:/Users/MED1NOGHR16/Desktop/ViSiElse/TESTDEV/TEST_S3/data/bookvar4.csv", sep=";", na.strings="", stringsAsFactors=FALSE)
+data <- read.csv("C:/Users/MED1NOGHR16/Desktop/ViSiElse/TESTDEV/TEST_S3/data/data4.csv", dec=",",sep=";", na.strings="", stringsAsFactors=FALSE)
+library(ViSiElse)
+```
+
+## quantity = "N"
+
+```{r, echo=TRUE}
+summary(data)
+summary(data[,3]-data[,2])
+vi <- visielse( X=data, book=book, pixel= 0.5, informer=NULL, doplot=FALSE)
+plot(vi, scal.unit.tps = 1)
+vi <- visielse( X=data, book=book, pixel= 0.001, informer=NULL)
+plot(vi, scal.unit.tps = 1)
+vi <- visielse( X=data, book=book, pixel= 1, informer="mean",doplot=FALSE)
+plot(vi, scal.unit.tps = 3.279)
+plot(vi, scal.unit.tps =  7.965 )
+vi <- visielse( X=data, book=book, pixel= 1, informer="median",doplot=FALSE)
+plot(vi, scal.unit.tps = 3.112)
+plot(vi, scal.unit.tps =  7.756 )
+```
+
+
+

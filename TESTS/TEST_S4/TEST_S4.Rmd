@@ -1,0 +1,260 @@
+---
+title: 'TESTS_DEV - S5 Représentation des indicateurs : moyenne & ecart-type / mediane
+  & quatile'
+author: "Nastasia Fouret"
+date: "13 mai 2016"
+output: html_document
+---
+
+```{r,echo=FALSE}
+book <- read.csv("C:/Users/MED1NOGHR16/Desktop/ViSiElSe/TESTDEV/TEST_S4/data/bookvar4.csv", sep=";", na.strings="", stringsAsFactors=FALSE)
+data <- read.csv("C:/Users/MED1NOGHR16/Desktop/ViSiElSe/TESTDEV/TEST_S4/data/data4.csv", dec=",",sep=";", na.strings="", stringsAsFactors=FALSE)
+library(ViSiElse)
+```
+
+# Jeu de Données 1
+
+
+### Vérification Action1 
+
+##### Mean
+
+```{r, echo =TRUE}
+vi <- visielse( X=data, book=book, pixel= 0.5, informer="mean",doplot=FALSE)
+
+# Avec ViSiElse vie informers
+vi@informers
+
+# Avec R directement sur les data
+c(mean(data[,2]),
+mean(data[,2]) - sqrt( var(data[,2])),
+mean(data[,2]) + sqrt( var(data[,2])))
+
+plot(vi, scal.unit.tps = mean(data[,2]))
+plot(vi, scal.unit.tps = ( mean(data[,2]) - sqrt( var(data[,2])) ))
+plot(vi, scal.unit.tps = ( mean(data[,2]) + sqrt( var(data[,2])) ) )
+```
+
+
+##### Median
+
+```{r, echo =TRUE}
+vi <- visielse( X=data, book=book, pixel= 0.5, informer="median",doplot=FALSE)
+
+# Avec ViSiElse vie informers
+vi@informers
+
+# Avec R directement sur les data
+quantile(data[,2])
+
+plot(vi, scal.unit.tps = quantile(data[,2])[3] )
+plot(vi, scal.unit.tps = quantile(data[,2])[2] )
+plot(vi, scal.unit.tps = quantile(data[,2])[4] )
+```
+
+### Vérification Action 2
+
+##### Mean
+
+```{r, echo =TRUE}
+vi <- visielse( X=data, book=book, pixel= 0.5, informer="mean",doplot=FALSE)
+
+# Avec ViSiElse vie informers
+vi@informers
+
+# Avec R directement sur les data
+c(mean(data[,3]),
+mean(data[,3]) - sqrt( var(data[,3])),
+mean(data[,3]) + sqrt( var(data[,3])))
+
+plot(vi, scal.unit.tps = mean(data[,3]))
+plot(vi, scal.unit.tps = ( mean(data[,3]) - sqrt( var(data[,3])) ))
+plot(vi, scal.unit.tps = ( mean(data[,3]) + sqrt( var(data[,3])) ) )
+```
+
+
+##### Median
+
+```{r, echo =TRUE}
+vi <- visielse( X=data, book=book, pixel= 0.5, informer="median",doplot=FALSE)
+
+# Avec ViSiElse vie informers
+vi@informers
+
+# Avec R directement sur les data
+quantile(data[,3])
+
+plot(vi, scal.unit.tps = quantile(data[,3])[3] )
+plot(vi, scal.unit.tps = quantile(data[,3])[2] )
+plot(vi, scal.unit.tps = quantile(data[,3])[4] )
+```
+
+
+### Vérification delay 1-2
+
+##### Mean
+
+```{r, echo =TRUE}
+vi <- visielse( X=data, book=book, pixel= 0.5, informer="mean",doplot=FALSE)
+
+# Avec ViSiElse vie informers
+vi@informers
+
+# Avec R directement sur les data
+c(mean(data[,3]-data[,2]),
+mean(data[,3]-data[,2]) - sqrt( var(data[,3]-data[,2])),
+mean(data[,3]-data[,2]) + sqrt( var(data[,3]-data[,2])))
+
+temp<- c(mean(data[,2]) + mean(data[,3]-data[,2]),
+mean(data[,2]) - sqrt( var(data[,2])) + mean(data[,3]-data[,2]) - sqrt( var(data[,3]-data[,2])),
+mean(data[,2]) + sqrt( var(data[,2])) + mean(data[,3]-data[,2]) + sqrt( var(data[,3]-data[,2])))
+temp 
+
+plot(vi, scal.unit.tps =temp[1])
+plot(vi, scal.unit.tps =mean(data[,2]))
+```
+
+
+##### Median
+
+```{r, echo =TRUE}
+vi <- visielse( X=data, book=book, pixel= 0.5, informer="median",doplot=FALSE)
+
+# Avec ViSiElse vie informers
+vi@informers
+
+# Avec R directement sur les data
+quantile(data[,3] - data[,2])
+temp <- quantile(data[,2]) + quantile(data[,3] - data[,2])
+
+plot(vi, scal.unit.tps = temp[3] )
+plot(vi, scal.unit.tps = quantile(data[,2])[3] )
+
+```
+
+
+```{r, echo=FALSE}
+book <- read.csv("C:/Users/MED1NOGHR16/Desktop/ViSiElSe/TESTDEV/TEST_S4/data/bookvar4.csv", sep=";", na.strings="", stringsAsFactors=FALSE)
+data <- read.csv("C:/Users/MED1NOGHR16/Desktop/ViSiElSe/TESTDEV/TEST_S4/data/data5.csv", dec=",",sep=";", na.strings="", stringsAsFactors=FALSE)
+library(ViSiElse)
+```
+
+# Jeu de Données 2
+
+
+### Vérification Action1 
+
+##### Mean
+
+```{r, echo =TRUE}
+vi <- visielse( X=data, book=book, pixel= 0.5, informer="mean",doplot=FALSE)
+
+# Avec ViSiElse vie informers
+vi@informers
+
+# Avec R directement sur les data
+c(mean(data[,2]),
+mean(data[,2]) - sqrt( var(data[,2])),
+mean(data[,2]) + sqrt( var(data[,2])))
+
+plot(vi, scal.unit.tps = mean(data[,2]))
+plot(vi, scal.unit.tps = ( mean(data[,2]) - sqrt( var(data[,2])) ))
+plot(vi, scal.unit.tps = ( mean(data[,2]) + sqrt( var(data[,2])) ) )
+```
+
+
+##### Median
+
+```{r, echo =TRUE}
+vi <- visielse( X=data, book=book, pixel= 0.5, informer="median",doplot=FALSE)
+
+# Avec ViSiElse vie informers
+vi@informers
+
+# Avec R directement sur les data
+quantile(data[,2])
+
+plot(vi, scal.unit.tps = quantile(data[,2])[3] )
+plot(vi, scal.unit.tps = quantile(data[,2])[2] )
+plot(vi, scal.unit.tps = quantile(data[,2])[4] )
+```
+
+### Vérification Action 2
+
+##### Mean
+
+```{r, echo =TRUE}
+vi <- visielse( X=data, book=book, pixel= 0.5, informer="mean",doplot=FALSE)
+
+# Avec ViSiElse vie informers
+vi@informers
+
+# Avec R directement sur les data
+c(mean(data[,3]),
+mean(data[,3]) - sqrt( var(data[,3])),
+mean(data[,3]) + sqrt( var(data[,3])))
+
+plot(vi, scal.unit.tps = mean(data[,3]))
+plot(vi, scal.unit.tps = ( mean(data[,3]) - sqrt( var(data[,3])) ))
+plot(vi, scal.unit.tps = ( mean(data[,3]) + sqrt( var(data[,3])) ) )
+```
+
+
+##### Median
+
+```{r, echo =TRUE}
+vi <- visielse( X=data, book=book, pixel= 0.5, informer="median",doplot=FALSE)
+
+# Avec ViSiElse vie informers
+vi@informers
+
+# Avec R directement sur les data
+quantile(data[,3])
+
+plot(vi, scal.unit.tps = quantile(data[,3])[3] )
+plot(vi, scal.unit.tps = quantile(data[,3])[2] )
+plot(vi, scal.unit.tps = quantile(data[,3])[4] )
+```
+
+
+### Vérification delay 1-2
+
+##### Mean
+
+```{r, echo =TRUE}
+vi <- visielse( X=data, book=book, pixel= 0.5, informer="mean",doplot=FALSE)
+
+# Avec ViSiElse vie informers
+vi@informers
+
+# Avec R directement sur les data
+c(mean(data[,3]-data[,2]),
+mean(data[,3]-data[,2]) - sqrt( var(data[,3]-data[,2])),
+mean(data[,3]-data[,2]) + sqrt( var(data[,3]-data[,2])))
+
+temp<- c(mean(data[,2]) + mean(data[,3]-data[,2]),
+mean(data[,2]) - sqrt( var(data[,2])) + mean(data[,3]-data[,2]) - sqrt( var(data[,3]-data[,2])),
+mean(data[,2]) + sqrt( var(data[,2])) + mean(data[,3]-data[,2]) + sqrt( var(data[,3]-data[,2])))
+temp 
+
+plot(vi, scal.unit.tps =temp[1])
+plot(vi, scal.unit.tps =mean(data[,2]))
+```
+
+
+##### Median
+
+```{r, echo =TRUE}
+vi <- visielse( X=data, book=book, pixel= 0.5, informer="median",doplot=FALSE)
+
+# Avec ViSiElse vie informers
+vi@informers
+
+# Avec R directement sur les data
+quantile(data[,3] - data[,2])
+temp <- quantile(data[,2]) + quantile(data[,3] - data[,2])
+
+plot(vi, scal.unit.tps = temp[3] )
+plot(vi, scal.unit.tps = quantile(data[,2])[3] )
+
+```
