@@ -8,7 +8,7 @@
 #' @exportMethod print
 #' @docType methods
 #' @param x a ViSibook object.
-#' @seealso  \code{\linkS4class{ViSibook}},  \code{\link{buildViSiGrid}}, 
+#' @seealso  \code{\linkS4class{ViSibook}},  \code{\link{visielse}}, 
 #' and see \code{\link{plot-ViSigrid-method}} for examples.
 setMethod( "print", "ViSibook", function(x){ 
   tempcat <- paste0(	".......................\n" ,
