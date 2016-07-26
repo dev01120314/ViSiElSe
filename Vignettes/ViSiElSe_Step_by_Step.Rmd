@@ -1,0 +1,278 @@
+---
+title: "ViSiElSe Step by Step"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{ViSiElSe_Step_by_Step}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEngine{knitr::knitr}
+  %\VignetteEncoding{UTF-8}
+---
+
+
+## Few words about ViSiElse
+
+VisiElse is __a graphical tool__ designed to visualize and to __give an overview of behavioural observations__ realized on individuals or groups. For example, ViSiElse allows __visualization of raw data__ during experimental observations of the __realization of a procedure__ like a medical algorithm. It graphically presents an overview of individuals and group __actions usually acquired from timestamps during video recorded sessions__. Options of the package allow adding graphical information as statistical indicators (mean, standard deviation, quantiles or statistical tests) but also for each action green or black zones providing visual information about the accuracy of the realized actions.
+
+# A step by step example 
+
+We are presenting how to create a completely artificial example in order to provide a simple and clear overview of this package. 
+
+
+## The process : Making coffee
+
+The process underlining making coffee corresponds to a __5 steps procedure__.
+
+  * 1- Taking the coffee
+  * 2- Fill the machine with coffee
+  * 3- Fill the tank with water
+  * 4- Push the Button
+  * 5- Drink the coffee
+
+All those actions are punctual.
+
+## The Dataset 
+
+ Concerning the procedure, __execution times__ for punctual actions are needed. The data.frame must also have a column to __identify individuals__. 
+ 
+ 
+```{r,fig.show='asis',fig.width=7, fig.height=4}
+coffee <- c(  58, 11,  5, 53, 53, 59, 24, 59, 46, 20)
+fill_coffee <- c(162,  57,103,154,165,132,  74, 107, 104,  93)
+fill_water <- c(  66,  92,54, 78, 74, 114, 91, 129, 71, 56)
+push_B <- c( 74, 99, 62, 84, 83, 120, 95, 129, 80, 63 )
+drink <- c( 472, 176, 475, 283, 265, 207, 234, 184, 490, 520)
+X <- data.frame(id = seq(1,10), coffee, fill_coffee,fill_water,push_B,drink)
+head(X)
+```
+
+## First plot
+
+Executions of punctual actions are distributed on the axis of time divided in intervals. The ammount of individuals having done the action in an interval is represented by intensity of color. 
+
+By default :
+
+  * Actions are ordered after their order in the data.frame X
+  * Pixel of time is set to 20 
+  * The time units ae seconds
+  * Median and quartiles are drawn
+
+```{r,echo=FALSE, warning=FALSE}
+library(ViSiElse)
+```
+```{r,fig.show='asis',fig.width=7, fig.height=4, warning=FALSE}
+visi1 <- visielse(X)
+```
+
+
+
+### The pixel of time 
+The parameter pixel represents the number of unit of time under which individuals
+are aggregated for punctual action in the plot. When the parameter pixel is too
+small the information represented will be too much aggregated to allow interpretation.
+
+For punctual actions data are aggregated in a matrix $M$ . The number of row of $M$ is the
+number of action and its number of columns is $[ ( max(X)-t_{0} )/pixel]$ .
+
+ $M_{i,j}$ contains the number of observations of the $i$ -th punctual action (by the order
+of the ViSibook object) between $t_0 + (j-1)*pixel$ included and
+ $t_0 + j*pixel$ excluded.
+
+
+#### Changing the pixel of time
+```{r,fig.show='asis',fig.width=7, fig.height=4, warning=FALSE}
+visi1 <- visielse(X, pixel = 10)
+```
+
+### Indicators 
+
+ViSiElse propopse by default to plot as white cirele median and quartiles. 
+
+#### Plot Mean and standard deviation
+```{r,fig.show='asis',fig.width=6, fig.height=3, warning=FALSE}
+visi1 <- visielse(X,informer = "mean")
+```
+
+#### Do not plot indicators 
+```{r,fig.show='asis',fig.width=6, fig.height=3, warning=FALSE}
+visi1 <- visielse(X,informer = NULL)
+```
+
+## The ViSibook
+
+The ViSibook is containing the structure of the behavioural process. If it is not given the function visielse computes it assuming
+the process is the ordered list of punctual actions given by the dataset colnames. It is possible either to extract the ViSiElse from a first execution of the visielse function or to build a data.frame respecting the condition for a ViSiBook.
+
+### Extraction of the visibook from the data
+```{r,fig.show='asis',fig.width=7, fig.height=3.5, warning=FALSE}
+visi1 <- visielse(X,informer = NULL, doplot = FALSE)
+book <- visi1@book
+plot(book)
+```
+
+
+### Structure of the book
+
+The __minimum structure for a ViSibook__ object must give for __each action__ its __name__ (without special characters but " _ " ), its __label__, its __type__ (punctual or long). 
+
+
+```{r,fig.show='asis',fig.width=7, fig.height=4, warning=FALSE}
+book
+```
+
+#### Changing labels
+By default the label are the same as the names of variable the the dataset, but plot.ViSigrid and plot.ViSibook use the label.
+
+```{r,fig.show='asis',fig.width=7, fig.height=4, warning=FALSE}
+book[,2]<- c("Taking the coffee",
+"Fill the machine with coffee",
+"Fill the tank with water",
+"Push the Button",
+"Drink the coffee")
+plot(book)
+visi1 <- visielse(X, book=book, is.ViSibook = TRUE,informer = NULL)
+```
+
+
+
+### Order of Actions in the process
+The __order__ is given by "showorder". It is the order by which actions are supposed to happen. 
+
+#### Change the order
+```{r,fig.show='asis',fig.width=7, fig.height=4, warning=FALSE}
+book[,4]<- c(5,1,2,4,3)
+plot(book)
+visi1 <- visielse(X, book=book, is.ViSibook = TRUE)
+```
+
+#### Ignored an action in the plot
+```{r,fig.show='asis',fig.width=7, fig.height=4, warning=FALSE}
+book[,4]<- c(NA,1,2,3,4)
+plot(book)
+visi1 <- visielse(X, book=book, is.ViSibook = TRUE)
+```
+
+## Long Actions
+
+Delays or long actions can be helpful to understand a prossess. ViSiElse considers two different types of actions: __punctual and long__. The actions called punctual are brief actions defined as a __time points__. The actions called long (or delays) are the ones defined by __duration__. They are characterized by both __a beginning punctual action and an ending one__. To defined a long action there is no need to change the dataset but only to add a line in the visibook. The slot typeA in the visibook psecify if the action is punctual ("p") or long ("l").
+
+#### Adding a long Actions
+
+We add an action measuring the time between filling the machine with coffee and pushing the button. For that we convert the ViSibook into a data.frame and add a line for the new action
+
+```{r,fig.show='asis',fig.width=7, fig.height=4, warning=FALSE}
+visi1 <- visielse( X )
+book <- ConvertFromViSibook( visi1@book ) # Convert book into data.frame
+add_delay <- c( "delay_coffee_push","Preparation","l","6","coffee","push_B")
+book[6,] <- add_delay 
+book
+```
+
+### ViSiElse representation of long actions
+
+ViSiElse represents each individual execution of a long action as an horizontal line when it is done. 
+
+```{r,fig.show='asis',fig.width=7, fig.height=4, warning=FALSE}
+visi2 <- visielse( X=X , book=book,informer=NULL)
+```
+
+
+## Green & Black zones 
+
+### Punctuals actions
+
+  Green and black zone are introduced to help visualize time boundaries. To define green and black zone for punctual actions we will add the columns :
+  * Green Zone : GZDeb and GZFin.
+  * Black zone 1 : BZBeforeDeb and BZBeforeFin.
+  * Black zone 2 : BZAfterDeb and BZAfterFin.
+
+
+#### Fill coffee in the machine should be done between 1min and 2min
+
+```{r,fig.show='asis',fig.width=7, fig.height=4, warning=FALSE}
+book$GZDeb <- c(NA,60,NA,NA,NA,NA)
+book$GZFin <- c(NA,120,NA,NA,NA,NA)
+visi2 <- visielse( X=X , book=book,informer=NULL)
+```
+
+#### Fill coffee in the machine should not be done before 30s
+
+```{r,fig.show='asis',fig.width=7, fig.height=4, warning=FALSE}
+book$GZDeb <- c(NA,NA,NA,NA,NA,NA)
+book$GZFin <- c(NA,NA,NA,NA,NA,NA)
+book$BZBeforeDeb <- c(NA,0,NA,NA,NA,NA)
+book$BZBeforeFin <- c(NA,30,NA,NA,NA,NA)
+visi2 <- visielse( X=X , book=book,informer=NULL)
+```
+
+
+
+#### Fill coffee in the machine should be done between the second 1min and 2 min but not before 30s or after 3min
+
+```{r,fig.show='asis',fig.width=7, fig.height=4, warning=FALSE}
+book$GZDeb <- c(NA,60,NA,NA,NA,NA)
+book$GZFin <- c(NA,120,NA,NA,NA,NA)
+book$BZBeforeDeb <- c(NA,0,NA,NA,NA,NA)
+book$BZBeforeFin <- c(NA,30,NA,NA,NA,NA)
+book$BZAfterDeb <- c(NA,180,NA,NA,NA,NA)
+book$BZAfterFin <- c(NA,Inf,NA,NA,NA,NA)
+visi2 <- visielse( X=X , book=book,informer=NULL)
+```
+
+### Long Action 
+
+ViSielse allow reprensention of two types of black zone for long action :
+          * A deadline not to cross : "span"
+          * A duration not to exceed : "time"
+
+#### The preparation should not last more than 2min 30s
+
+```{r,fig.show='asis',fig.width=7, fig.height=4, warning=FALSE}
+visi1 <- visielse( X,  doplot = FALSE )
+book <- ConvertFromViSibook( visi1@book ) # Convert book into data.frame
+add_delay <- c( "delay_coffee_push","Preparation","l","6","coffee","push_B")
+book[6,] <- add_delay 
+book$BZLong <- c(rep(NA,5),150)
+book$BZLtype <- c(rep(NA,5),"time")
+visi1 <- visielse( X, book=book , informer = NULL)
+```
+
+#### The preparation should be done at 2min 30s
+
+```{r,fig.show='asis',fig.width=7, fig.height=4, warning=FALSE}
+book$BZLong <- c(rep(NA,5),150)
+book$BZLtype <- c(rep(NA,5),"span")
+visi1 <- visielse( X, book=book ,informer = NULL)
+```
+
+
+## Group
+
+To define two groups you need to :
+* Add a vector containing the group for each individuals
+* Select a metohd of visualizing groups
+
+
+### Method : Cut
+Each groups is represented one under the other.
+
+```{r,fig.show='asis',fig.width=7, fig.height=4, warning=FALSE}
+group <- c( "group2","group1","group2","group1","group1","group2","group1","group1","group1","group2")
+visi1 <- visielse( X,group=group, book=book ,informer = NULL, method = "cut")
+```
+
+### Method : Join
+Groups are spatially mixed but they are represented by different colors.
+
+```{r,fig.show='asis',fig.width=7, fig.height=4, warning=FALSE}
+group <- c( "group1","group1","group1","group1","group1","group2","group2","group2","group2","group2")
+visi1 <- visielse( X,group=group, book=book ,informer = NULL, method = "join")
+```
+
+### Method : Within
+All individual execution are represented and under executions of the selected group.
+
+```{r,fig.show='asis',fig.width=7, fig.height=4, warning=FALSE}
+group <- c( "group2","group1","group2","group1","group1","group2","group1","group1","group1","group2")
+visi1 <- visielse( X,group=group, book=book ,informer = NULL, method = "within",grwithin = "group1")
+```
