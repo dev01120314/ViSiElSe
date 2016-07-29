@@ -10,7 +10,18 @@ library(Matrix)
 for (i in seq_along( list_function) ){ 
   source( paste0(path,"/R/",list_function[i]) , echo = TRUE)
 }
-visi1 <- visielse(X,doplot = FALSE)
+
+
+
+visi1 <- visielse(X,informer = NULL, doplot = FALSE)
+book <- visi1@book
+book[,2]<- c("Taking the coffee",
+             "Fill the machine with coffee",
+             "Fill the tank with water",
+             "Push the Button",
+             "Drink the coffee")
+x <- visielse(X,book=book, is.ViSibook=TRUE,doplot = FALSE)
+
 library(grid)
-plot(visi1)
+plot(x,main="titre")
 #### Changing the pixel of time
