@@ -23,7 +23,7 @@
   for (ii in sortindex ) {
     grid::pushViewport( vplayoutA[[ which( sortindex == ii ) ]] )
     grid::grid.text( 	substr( as.character(methods::slot( book , "label" )[ ii ] ), 1 , ncharlabel ) ,
-                      rot = 0.5 ,
+                      rot = 0 ,
                       gp = gpar( col = "black" , fontsize = Fontsize.label.Action , fontface = "plain" ))
     grid::upViewport()
   }
