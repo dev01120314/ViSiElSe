@@ -1,0 +1,186 @@
+---
+title: "TESTS_DEV - S1 Représentation des individus"
+author: "Nastasia Fouret"
+date: "12 mai 2016"
+output: html_document
+---
+
+
+
+```{r, echo = FALSE}
+book <- read.csv("C:/Users/MED1NOGHR16/Desktop/ViSiElSe/TESTDEV/TEST_S1/data/bookvar.csv", sep=";", na.strings="", stringsAsFactors=FALSE)
+data <- read.csv("C:/Users/MED1NOGHR16/Desktop/ViSiElSe/TESTDEV/TEST_S1/data/data.csv", dec=",",sep=";", na.strings="", stringsAsFactors=FALSE)
+library(ViSiElse, quietly=TRUE,verbose = FALSE)
+```
+
+# Jeu de données 1 
+
+-Nombre d’actions:  	5
+
+-Nombre d’individus:	100
+
+-Action 1:	          Commence à 5
+
+-Action 2:	          
+     25% : 10 / 50% : 50 / 25% : 70
+                              
+-Action 3 :	          Action2 + Alea()*10
+
+-Action 4 :	          Action3 + Action2 + Alea()*100
+
+-Action 5 :	          Action4 + 20
+
+## Checklist 
+
+-Action 1 à 0
+
+-Action 2 : Séparation marquée par une différence de couleur
+
+-Action 3 : Ecartement sur 10 secondes
+
+-Action 4 : Ecartement sur 100 secondes
+
+-Action 5 : Delais de 20 second pour tout le monde
+
+### Quantity = N, Avec Pixel = 1
+```{r}
+vi <- visielse( data , book=book, pixel = 1, doplot = FALSE )
+plot( vi, scal.unit.tps = 10)
+```
+
+### Quantity = N, Avec Pixel = 10
+```{r}
+vi <- visielse( data , book=book, pixel = 10, doplot = TRUE )
+plot( vi, scal.unit.tps = 10)
+```
+
+### Quantity = N, Avec Pixel = 13
+```{r}
+vi <- visielse( data , book=book, pixel = 20, doplot = FALSE )
+plot( vi, scal.unit.tps = 10)
+```
+
+### Quantity = "dens", pixel = 1
+
+```{r}
+vi <- visielse( data , book=book,, quantity = "dens", pixel = 1, doplot = FALSE )
+plot( vi, scal.unit.tps = 10)
+```
+
+# Jeu de données 2 
+
+-Nombre d’actions:  	2
+
+-Nombre d’individus:	100
+
+-Action 1: 1:99 * 2
+
+-Action 2: Action 1 + 2	
+  
+## Check List
+
+-Action 1 & 2 : Représentation dans le pixel
+
+-Action 1 rectangle 1 à 1
+
+-Action 1 : last rectangle à 99
+
+-Action 2 : rectangle 1 à 3
+
+-Action 2 rectangle last à 101
+
+-Action 1 – Action 2 séparation de 2
+
+
+
+```{r, echo = FALSE}
+book <- read.csv("C:/Users/MED1NOGHR16/Desktop/ViSiElSe/TESTDEV/TEST_S1/data/bookvar1.csv", sep=";", na.strings="", stringsAsFactors=FALSE)
+data <- read.csv("C:/Users/MED1NOGHR16/Desktop/ViSiElSe/TESTDEV/TEST_S1/data/data1.csv", dec=",",sep=";", na.strings="", stringsAsFactors=FALSE)
+library(ViSiElse, quietly=TRUE,verbose = FALSE)
+```
+
+##  Quantity N; pixel = 0.5
+
+```{r}
+vi <- visielse( data , book=book, pixel = 0.5, doplot=FALSE)
+plot( vi, scal.unit.tps = 1)
+plot( vi, scal.unit.tps = 99)
+plot( vi, scal.unit.tps = 101)
+```
+
+##  Quantity N; pixel = 1
+
+```{r}
+vi <- visielse( data , book=book, pixel = 1, doplot=FALSE)
+plot( vi, scal.unit.tps = 1)
+plot( vi, scal.unit.tps = 99)
+plot( vi, scal.unit.tps = 101)
+```
+
+##  Quantity N; pixel = 2
+```{r}
+vi <- visielse( data , book=book, pixel = 2, doplot=FALSE)
+plot( vi, scal.unit.tps = 1)
+plot( vi, scal.unit.tps = 99)
+plot( vi, scal.unit.tps = 101)
+```
+
+# Jeu de données 3
+
+-Nombre d’actions:  	2
+
+-Nombre d’individus:	100
+
+-Action1 :  50% : 0 / 25% : 20 / 15% : 40 / 10% : 60
+
+-Action 2: Action 1 + 10	
+          
+## Check List 
+
+
+```{r, echo = FALSE}
+book <- read.csv("C:/Users/MED1NOGHR16/Desktop/ViSiElSe/TESTDEV/TEST_S1/data/bookvar1.csv", sep=";", na.strings="", stringsAsFactors=FALSE)
+data <- read.csv("C:/Users/MED1NOGHR16/Desktop/ViSiElSe/TESTDEV/TEST_S1/data/data2.csv", dec=",",sep=";", na.strings="", stringsAsFactors=FALSE)
+library(ViSiElse, quietly=TRUE,verbose = FALSE)
+```
+
+##  Quantity N ; pixel = 1
+
+```{r}
+vi <- visielse( data , book=book, pixel = 1, quantity = "N", doplot=FALSE, informer = NULL)
+plot( vi, scal.unit.tps = 10)
+```
+
+##  Quantity dens ; pixel = 1
+
+```{r}
+vi <- visielse( data , book=book, pixel = 1, quantity = "dens", doplot=FALSE, informer = NULL)
+plot( vi, scal.unit.tps = 10)
+```
+
+##  Quantity N ; pixel = 10
+
+```{r}
+vi <- visielse( data , book=book, pixel = 10, quantity = "dens")
+```
+
+##  Quantity dens ; pixel = 10
+
+```{r}
+vi <- visielse( data , book=book, pixel = 10, quantity = "dens")
+```
+
+##  Quantity N ; pixel = 20
+
+```{r}
+vi <- visielse( data , book=book, pixel = 20, quantity = "N", doplot=FALSE, informer = NULL)
+plot( vi, scal.unit.tps = 10)
+```
+
+##  Quantity dens ; pixel = 20
+
+```{r}
+vi <- visielse( data , book=book, pixel = 20, quantity = "dens", doplot=FALSE, informer = NULL)
+plot( vi, scal.unit.tps = 10)
+```
+

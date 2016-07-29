@@ -1,0 +1,50 @@
+---
+title: "TESTS_DEV - S6 Représentation des greens zone"
+author: "Nastasia Fouret"
+date: "11 mai 2016"
+output: html_document
+---
+
+
+```{r}
+book <- read.csv("I:/CEPOI/COMMUN/SIMULATION/ViSElSe/TESTDEV/TEST_S6/data/bookvar6.csv", dec="," , sep=";", na.strings="", stringsAsFactors=FALSE)
+data <- read.csv("I:/CEPOI/COMMUN/SIMULATION/ViSElSe/TESTDEV/TEST_S6/data/data6.csv", dec=",",sep=";", na.strings="", stringsAsFactors=FALSE)
+datasup <- read.csv("I:/CEPOI/COMMUN/SIMULATION/ViSElSe/TESTDEV/TEST_S6/data/data6sup.csv", dec=",",sep=";", na.strings="", stringsAsFactors=FALSE)
+library(ViSiElse)
+```
+
+# ViSigrid
+```{r, echo=FALSE}
+vi <- visielse( X=data, Xsup=datasup, book=book, pixel= 1, informer="mean")
+plot(vi, scal.unit.tps = 1, alphaZones = 0.7, alphasup = 1)
+plot(vi, scal.unit.tps = 1, alphaZones = 0.7,colgreenzone = "yellow", colblackzone = "red")
+vi@informers
+```
+
+# Construction du book : Change des black zones
+
+### Afficher le book
+```{r, echo=FALSE}
+vi@book
+```
+
+### Modifier le book
+
+```{r, echo=FALSE}
+vi@book[5,14] <- 6
+vi@book[2,14] <- 2
+vi@book
+plot(vi@book)
+print(vi@book)
+```
+
+# ViSigrid
+```{r, echo=FALSE}
+vi <- visielse( X=data, Xsup=datasup, book=book, pixel= 0.5, informer="mean")
+plot(vi, scal.unit.tps = 1, alphaZones = 0.7)
+vi@informers
+```
+
+```{r, echo=FALSE}
+
+```

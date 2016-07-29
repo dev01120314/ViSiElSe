@@ -14,7 +14,7 @@
 \value{
 Vector \itemize{
 \item{[1]}{ The number of actions defined in x.}
-\item{[2]}{ The number of characteristics defined in x, 
+\item{[2]}{ The number of characteristics defined in x,
 its minimum value is 6 and its maximum is 15.}
 }
 }

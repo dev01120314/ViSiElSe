@@ -17,8 +17,8 @@
 #' @slot vect_tps A \code{"vector"} it stores the times vector mapping the grid. 
 #' @slot informers A \code{"matrix"} It stores the indicators (mean, median or NULL) by actions. 
 #' @slot testsP A \code{"vector"} Results of tests p.value<threshold.test. 
-#' @slot parameters A \code{"list"}. It stores the parameters put in the \code{\link{buildViSiGrid}} function. 
-#' @seealso \code{\link{buildViSiGrid}}, \code{\link{plot,ViSigrid-method}}, \code{\linkS4class{ViSibook}}
+#' @slot parameters A \code{"list"}. It stores the parameters put in the \code{\link{visielse}} function. 
+#' @seealso \code{\link{visielse}}, \code{\link{plot,ViSigrid-method}}, \code{\linkS4class{ViSibook}}
 #' @exportClass ViSigrid
 # Method Visigrid
 ViSigrid = setClass("ViSigrid",
