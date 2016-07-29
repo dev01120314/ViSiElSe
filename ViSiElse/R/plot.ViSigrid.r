@@ -68,12 +68,12 @@ setMethod( f = "plot",
                                    height = vp0h ,
                                    just = c( 0 , 0 ) ,
                                    name = "vp0" ) # cadre
-             layoutAction 	<- grid::viewport( layout = grid.layout( lgv , 1 , widths = 1 , heights = 1 ) , name = "layoutAction" )
+             layoutAction 	<- grid::viewport( layout = grid::grid.layout( lgv , 1 , widths = 1 , heights = 1 ) , name = "layoutAction" )
              vplayoutA <- lapply(  sortindex , function(x )(
                grid::viewport( layout.pos.row = which( sortindex == x ) , layout.pos.col = 1 , name = paste0( "vp" , methods::slot( book , "vars")[ x ] ) ) ))
              names(vplayoutA) = paste0( rep("vp" , lgv ) , methods::slot( book , "vars")[ seq( 1 , lgv , 1 ) ] )
              # PLoting ................................................................................................................................................
-             grid.newpage()
+             grid::grid.newpage()
               grid::pushViewport( vp0 )
               grid::pushViewport( layoutAction )
              for (ia in sortindex ) { #		ia=2
@@ -323,35 +323,12 @@ setMethod( f = "plot",
               grid::upViewport() # Out of the line of action
               grid::upViewport() # Out of the cadre
              #################################################### Legends ###################################################
-             #Legend Axe Y
-             #___________________________________________________________________________________________________________________
-             # Legend Title graph
-              grid::pushViewport(grid::viewport( x = grid::unit( (1 - vp0w ) * 2/3 , "npc" ) ,
-                                     y = grid::unit( (1 - vp0h ) * 2/3 + vp0h , "npc") ,
-                                     width = grid::unit( vp0w , "npc" ) ,
-                                     height = grid::unit( (1 - vp0h ) * 0.5 , "npc" ) ,
-                                     just = c( 0 , 0 ) ))
-                grid::grid.text( main , gp = gpar( fontsize = size.main , col = col.main) )
-              grid::upViewport()
-             #___________________________________________________________________________________________________________________
-             # Legend names action
-              grid::pushViewport(grid::viewport( 	x = grid::unit( 0 , "npc" ) ,
-                                      y = grid::unit( (1 - vp0h ) * 2/3 , "npc" ) ,
-                                      width = (1 - vp0w ) * 2/3  ,
-                                      height = vp0h ,
-                                      just = c( 0 , 0 ) ,
-                                      name = "vp0" ))
-                grid::pushViewport( layoutAction )
-                 for (ii in sortindex ) {
-                    grid::pushViewport( vplayoutA[[ which( sortindex == ii ) ]] )
-                      grid::grid.text( 	substr( as.character(methods::slot( book , "label" )[ ii ] ), 1 , ncharlabel ) ,
-                               rot = 0.5 ,
-                               gp = gpar( col = "black" , fontsize = Fontsize.label.Action , fontface = "plain" ))
-                    grid::upViewport()
-               }
-                grid::upViewport()
-              grid::upViewport()
-             #___________________________________________________________________________________________________________________
+             #Legend Axe Y + title
+              .legend_action( book = book ,main = main ,  size.main = size.main ,  Fontsize.title = Fontsize.title ,
+                                             Fontsize.label.Action = Fontsize.label.Action,
+                                             col.main = col.main, ncharlabel=ncharlabel,
+                                             vp0h	= vp0h, vp0w = vp0w,layoutAction=layoutAction,sortindex=sortindex,
+                              vplayoutA=vplayoutA)
              #___________________________________________________________________________________________________________________
              # Grid times
               grid::pushViewport(vp0)
