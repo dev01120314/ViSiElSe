@@ -82,8 +82,8 @@ setMethod( f = "plot",
                # Punctuals treatment __________________________________________________________________________________________________________________________________________________________________
                if (methods::slot( book , "typeA")[  ia  ] == "p" ) {
                  # GREEN & BLACK ZONES
-                 .plotgreenzoneP(book,ia,inftps,colgreenzone,alphaZones)
-                 .plotblackzoneP(book, ia, inftps, colblackzone, alphaZones)
+                 plotgreenzoneP(book,ia,inftps,colgreenzone,alphaZones)
+                 plotblackzoneP(book, ia, inftps, colblackzone, alphaZones)
                  # Plot the punction action
                  plotpunctual( 	mat = methods::slot( x , "MATp" ) ,
                                 iip = which( sortindex[ which( methods::slot( book , "typeA" )[sortindex] == "p" )] == ia ),
@@ -91,7 +91,7 @@ setMethod( f = "plot",
                                 lgH = lgH ,
                                 method = methods::slot( x , "parameters")$method ,
                                 linA = linA )
-                 .plotInformersTests(x,book, inftps, ia, alphainf, lwdline, rcircle, linA )
+                 plotInformersTests(x,book, inftps, ia, alphainf, lwdline, rcircle, linA ,newx, newy)
                  # Supplementary times points
                  if (length( methods::slot( x , "MATpsup" ) ) > 0 ) {
                    plotpunctualsup(X = methods::slot( x , "MATpsup" ) ,
@@ -122,7 +122,7 @@ setMethod( f = "plot",
                         alphasup = alphasup ,
                         colblackzone = colblackzone)
                  if (is.null( methods::slot( x , "parameters" )$informer ) == FALSE ) {
-                   .plot_long_informer(x, book, sortindex, iipp, ia, inftps,lwdline,linA)
+                   plot_long_informer(x, book, sortindex, iipp, ia, inftps,lwdline,linA,newx, newy)
                  }
                }
                 grid::upViewport() # Out of the line of action
@@ -131,18 +131,18 @@ setMethod( f = "plot",
               grid::upViewport() # Out of the cadre
              #################################################### Legends ###################################################
              #Legend Axe Y + title
-              .legend_action( book = book ,main = main ,  size.main = size.main ,  Fontsize.title = Fontsize.title ,
+              legend_action( book = book ,main = main ,  size.main = size.main ,  Fontsize.title = Fontsize.title ,
                                              Fontsize.label.Action = Fontsize.label.Action,
                                              col.main = col.main, ncharlabel=ncharlabel,
                                              vp0h	= vp0h, vp0w = vp0w,layoutAction=layoutAction,sortindex=sortindex,
                               vplayoutA=vplayoutA)
              #___________________________________________________________________________________________________________________
              # Grid times
-              .legendgridtimes( vp0, vp0w,vp0h , x , lgv, inftps, scal.unit.tps,col.grid,lwd.grid,lty.grid,Fontsize.label.Time,unit.tps )
+              legendgridtimes( vp0, vp0w,vp0h , x , lgv, inftps, scal.unit.tps,col.grid,lwd.grid,lty.grid,Fontsize.label.Time,unit.tps )
              #________________________________________________________________________________________________________________
              #___________________________________________________________________________________________________________________
              ####Legend bottom
              ###  &  any( methods::slot( book , "typeA" )[ sortindex ] == "l")
-              .legendbottom( x, sortindex, book, vp0h, Fontsize.label.color,colblackzone,alphaZones)
+              legendbottom( x, sortindex, book,vp0w, vp0h, Fontsize.label.color,colblackzone,alphaZones,colgreenzone)
 }
 )
