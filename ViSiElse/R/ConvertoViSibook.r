@@ -17,6 +17,7 @@ ConvertoViSibook <- function(x ) {
   if (is.na( match( "showorder" , colnames( x ) ) ) ) { stop( " ConvertoViSibook : colnames \"showorder\" not found " ) }
   if (is.na( match( "deb" , colnames( x ) ) ) ) { stop( " ConvertoViSibook : colnames \"deb\" not found " ) }
   if (is.na( match( "fin" , colnames( x ) ) ) ) { stop( " ConvertoViSibook : colnames \"fin\" not found " ) }
+  x <- x[order(x$showorder),]
   return( ViSibook( 
     vars = x[ , match( "vars" , colnames( x ) ) ] ,
     label = x[ , match( "label" , colnames( x ) ) ] ,

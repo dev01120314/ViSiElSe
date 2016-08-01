@@ -17,7 +17,7 @@
 Method print for ViSibook object.
 }
 \seealso{
-\code{\linkS4class{ViSibook}},  \code{\link{buildViSiGrid}}, 
+\code{\linkS4class{ViSibook}},  \code{\link{visielse}}, 
 and see \code{\link{plot-ViSigrid-method}} for examples.
 }
 

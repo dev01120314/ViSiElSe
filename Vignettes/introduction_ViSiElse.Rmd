@@ -1,0 +1,395 @@
+---
+title: "Introduction to ViSiElse"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEngine{knitr::knitr}
+  %\VignetteEncoding{UTF-8}
+---
+
+
+## Few words about ViSiElse
+
+VisiElse is __a graphical tool__ designed to visualize and to __give an overview of behavioural observations__ realized on individuals or groups. For example, ViSiElse allows __visualization of raw data__ during experimental observations of the __realization of a procedure__ like a medical algorithm. It graphically presents an overview of individuals and group __actions usually acquired from timestamps during video recorded sessions__. Options of the package allow adding graphical information as statistical indicators (mean, standard deviation, quantiles or statistical tests) but also for each action green or black zones providing visual information about the accuracy of the realized actions.
+
+
+## The principle
+
+ViSiElse concerns __behavioural processes__ that, like a simulated healthcare procedure, can be __decomposed in actions__. We define two different types of actions in ViSiElse: __punctual and long__. The actions called punctual are brief actions defined as a __time points__. They __do not last enough to be measured on the chosen time scale__. The actions called long are the ones defined by __duration__. They are characterized by both __a beginning punctual action and an ending one__. In order to __model a procedure__, there is a need to sort actions in the way they are supposed to be realized as defined for example by medical consensus and/or algorithms for a medical procedure. This __structure is stored in a S4-class object ViSibook__, it can be modified, printed or plotted.
+
+
+This Package contains __two S4class of object: ViSibook and ViSigrid__. Basically a ViSibook object will __store information on a process__ like a health care procedure, then a ViSigrid object is __built with observations__ of this procedure and the procedure ViSibook, and finally the graphic is obtained by __plotting this ViSigrid object__.
+
+The __minimum structure for a ViSibook__ object must give for __each action__ its __name__ (without special characters but " _ " ), its __label__, its __type__ (punctual or long). For a __long action__, in addition it is necessary to provide the two specific actions that defined its __starting and ending__. The __order__ by which actions are supposed to happen is also required.
+
+Beyond the minimum structure __green zones or/and black zones__ can be defined to help to __visualize if a behaviour is realized on time__.
+
+__A ViSigrid object is built using the function visielse with at least a ViSibook and data of individual realization times for each punctual action__.
+
+
+------
+
+# A step by step example 
+
+We are presenting how to create a completely artificial example in order to provide a simple and clear overview of this package. 
+
+## The process
+
+The process underlining corresponds to an __8 steps procedure__. It is built on the basis of a behaviour structure over 6 different punctual actions (brief action that does not last enough to measure its duration) and 2
+long actions defined by the duration between a beginning punctual action and an ending one.
+
+  * Actions __1__, __3__, __4__, __5__ and __8__ are __punctual actions__.
+  * Actions __2__ and __6__ are __long actions__.
+  * The action __2__ is the duration __between action 1 and 2__.
+  * The action __6__ is the duration __between action 4 and 7__.
+  * Actions will be __ordered from 1 to 8__.
+  
+The process time restrictions are:
+
+
+  * Action __1__ is supposed to happened __between the 10th and the 25th seconds__, 
+  it can be done __before__ but __not after__.
+  * Action __2__ should __take maximum 5 seconds__.
+  * Action __5__ should be __done between the 35th and the 40th seconds__ and __repeated every 20__ seconds.
+  * Action __6__ should __be over at 30 seconds__.
+  * Action __8__ should be done __between the 60th and the 80th seconds__, absolutely __not before the 55th__ second or __after the 95th__.
+  
+## Construction of a ViSibook 
+
+### Minimum structure
+
+ The minimum information to create a ViSibook is:
+ 
+  * __vars__: Name of actions.
+  * __label__:  brief description of actions.
+  * __typeA__:  type of actions, "l" for long and "p" for punctual.
+  * __showorder__: a vector storing order in which actions will be plotted. When an action is not to be plotted showorder should be NA.
+  * __deb__: For long actions deb stores the punctual action name corresponding to its start.
+  * __fin__: For long actions fin stores the punctual action name corresponding to its end.
+  
+  
+ 
+```{r,fig.show='asis',fig.width=7}
+    library(ViSiElse)
+    vars <- c( "Action1" , "Action2" , "Action3" , "Action4" , "Action5" , 
+               "Action6" , "Action7","Action8")
+    label <- c( "Action 1", "Action 2", "Action 3", "Action 4", "Action 5", 
+                "Action 6", "Action 7","Action 8" )
+    typeA <- c( "p" , "l" , "p" , "p" , "p", "l" , "p" , "p" )
+    deb <- rep(NA,8)
+    deb[2] <- vars[1]
+    deb[6] <- vars[4]
+    fin <- rep( NA, 8)
+    fin[2] <- vars[3]
+    fin[6] <- vars[7]
+    showorder <- c(1, 2 ,3 ,NA ,4 , 5, NA, 6 )
+    book_df <- data.frame(vars ,label ,typeA ,showorder, deb,fin)
+    book <-  ConvertoViSibook(book_df)
+    plot(book)
+    print(book)
+```
+  
+### Green and black zones
+  
+  
+  Now, to add restrictions on time to the process ViSiElse proposes to define green and black zones.
+  
+To define green and black zone for punctual actions we will add:
+   
+   * __GZDeb__: Green zone starting time.
+   * __GZFin__: Green zone ending time.
+   * __Repetition__: length of the time interval between green zones.
+   * __BZBeforeDeb__: Black zone 1 starting time.
+   * __BZBeforeFin__: Black zone 1 ending time.
+   * __BZAfterDeb__: Black zone 2 starting time.
+   * __BZAfterFin__: Black zone 2 ending time.
+   
+To define black zone for long actions we will add:
+   
+   * __BZLong__ : Black zone time.
+   * __BZLtype__ : Type of the black zone :
+    + __"time"__ if the action should be finish __at a time__
+    + __"span"__ if the action should be finish __in a time__.
+  
+```{r,fig.show='asis',fig.width=7}
+    
+  GZDeb <- rep(NA,8)
+  GZDeb[1] <- 10
+  GZDeb[5] <- 35
+  GZDeb[8] <- 60
+  
+  GZFin <- rep(NA,8)
+  GZFin[1] <- 25
+  GZFin[5] <- 40
+  GZFin[8] <- 80
+  
+  Repetition <- rep(NA,8)
+  Repetition[5] <- 20
+  
+  BZBeforeDeb <- rep(NA,8)
+  BZBeforeDeb[ 8 ] <- 0
+  
+  BZBeforeFin <- rep(NA,8)
+  BZBeforeFin[ 8 ] <- 55
+  
+  BZAfterDeb <- rep(NA,8)
+  BZAfterDeb[ 8 ] <- 95
+  BZAfterDeb[ 1 ] <- 25
+  
+  BZAfterFin <- rep(NA,8)
+  BZAfterFin[ 8 ] <- Inf
+  BZAfterFin[ 1 ] <- Inf
+  
+  BZLong <- rep(NA,8)
+  BZLong[2] <- 5
+  BZLong[6] <- 40
+  
+  BZLtype <- rep(NA,8)
+  BZLtype[2] <- "span"
+  BZLtype[6] <- "time"
+  
+  book_df <- data.frame(vars ,label ,typeA ,showorder, deb,fin,
+                        GZDeb,GZFin, Repetition,BZBeforeDeb,BZBeforeFin,
+                        BZAfterDeb,BZAfterFin, BZLong, BZLtype)
+    book <-  ConvertoViSibook(book_df)
+    plot(book)
+    print(book)
+```
+
+## The Dataset 
+
+### First
+
+ Concerning the procedure, __only time for punctual actions__ are needed, but for all of them. They must have the __names given in__ the slot vars of the __ViSibook__. The data.frame must also have a column to __identify individuals__. 
+ 
+ 
+```{r,fig.show='asis',fig.width=7, fig.height=7}
+Action1 <- rbinom(50, 25, 0.5)
+Action3 <- Action1 + rbinom(50, 10, 0.9)
+Action4 <- Action3 + rbinom(50, 20, 1/2)
+Action5 <- Action4 + rbinom(50, 5, 1/3)
+Action7 <- Action5 + rbinom(50, 100, 1/5)
+Action8 <- Action7 + rbinom(50, 110, 1/3)
+X <- data.frame(id = seq(1,50), Action1, Action3, Action4, Action5, Action7, Action8)
+head(X)
+```
+
+### Then supplementary times 
+
+If an action is effectuated __more than once__ its __supplementary times__ should be store in a __separate__ data.frame. 
+
+Here all individuals repeat the action 5 two times and a half of them will repeat it three times.
+
+```{r,fig.show='asis',fig.width=7, fig.height=7}
+Action5sup1 <- Action5 + rep( 20, 50)
+Action5sup2 <- Action5sup1[ seq( 1,25)] +  rep( 20, 25)
+Action5sup3 <- Action5sup2 +  rep( 5, 25)
+Action5sup <- c(Action5sup1, Action5sup2, Action5sup3)
+id <- c( seq( 1,50), seq( 1,25), seq( 1,25))
+Action1sup <- rep( NA, 50 + 25  + 25  )
+Action3sup <- rep( NA, 50 + 25  + 25  )
+Action4sup <- rep( NA, 50 + 25  + 25  )
+Action7sup <- rep( NA, 50 + 25  + 25  )
+Action8sup <- rep( NA, 50 + 25  + 25  )
+Xsup <- data.frame(id , Action1sup, Action3sup, 
+                   Action4sup, Action5sup, Action7sup, Action8sup)
+colnames(Xsup) <- colnames(X)
+head(Xsup)
+```
+
+## ViSiElse
+
+### 
+With __a ViSibook and observational data__ stored as above, to obtain a representation of
+the process the visielse function : 
+
+ * __Create a ViSigrid__ object.
+ * __Plot__ this object.
+
+```{r,fig.show='asis',fig.width=7, fig.height=7}
+x <-  visielse( X = X, book = book, pixel = 1, Xsup = Xsup )
+plot(x)
+
+```
+
+### The parameter pixel
+
+The parameter pixel represents the number of unit of time under which individuals are aggregated for punctual action in the plot. When the parameter pixel is __too small__ the information represented will be __too much aggregated__ to allow interpretation. 
+
+_
+For punctual actions data are aggregated in a matrix $M$ . The number of row of $M$ is the 
+number of action and its number of columns is $[ ( max(X)-t_0 )/pixel]$.
+_
+
+_
+$M_{i,j}$ contains the number of observations of the $i$-th punctual action (by the order of the ViSibook object) between $t_0 + (j-1)pixel$ included and
+$t_0 + j \times pixel$ excluded.
+_
+
+
+Here the action 1 occurred within the first second so pixel should be set small enough.
+
+```{r,fig.show='asis',fig.width=7, fig.height=7}
+x <-  visielse( X = X, book = book , pixel = 5, Xsup = Xsup )
+plot(x, main = "PIXEL = 5")
+x <-  visielse( X = X, book = book, pixel = 20, Xsup = Xsup )
+plot(x, main = "PIXEL = 20")
+x <-  visielse( X = X, book = book, pixel = 1, Xsup = Xsup )
+plot(x, main = "PIXEL = 1")
+```
+
+
+### The parameter informer
+
+ The parameter informer allows __choosing an indicator__. Informer can take three values:
+ 
+ * _median_: __Median and quartiles__ are calculated for each action,
+   using the function _quantile_ from the package stats. This is the default value.
+ * _mean_: __Mean and standard deviation__ are calculated for each action,
+    using the functions _mean_ and _var_ from the package stats.
+ * _NULL_: __no indicators__ are computed.
+ 
+_
+When a group is declared indicators are calculated by group if the method cut or within is chosen. When plotting, indicators for a punctual action are represented by white circles linked by a line. For long action, only a black line is plotted from the median (or mean) of the punctual action staring it. The line length represents the median (or mean) of the long action duration. 
+_
+
+_
+Informers are computed directly on the given matrix for punctual actions. 
+For a long action it is calculated on the difference between the beginning punctual action and the ending one.
+_
+
+```{r,fig.show='asis',fig.width=7, fig.height=7}
+x <-  visielse( X = X, book = book, pixel = 1, Xsup = Xsup )
+plot(x, main = "informer =  Median")
+x <-  visielse( X = X, book = book, pixel = 1, Xsup = Xsup,  informer = "mean" )
+plot(x, main = "informer =  Mean")
+x <-  visielse( X = X, book = book, pixel = 1, Xsup = Xsup,  informer = NULL )
+plot(x, main = "informer =  NULL")
+```
+
+### The starting time 
+
+The origin of the graphic can be set using the parameter t_0. There is two ways to define it:
+ 
+ * __A number__: __set to 0__. It can be change at convenience, but for long actions black zones will not
+ be drawn, and for punctual actions black and green zones will not be translated.
+ * __The name of a punctual action__: To set the origin of the graphic to the moment when the action was done for each individual. Black and green zones will not be translated as well.
+
+
+```{r,fig.show='asis',fig.width=7, fig.height=7}
+x <-  visielse( X = X, book = book, pixel = 1, Xsup = Xsup )
+plot(x, main = "t_0 =  0")
+x <-  visielse( X = X, book = book, pixel = 1,  t_0 = 10 )
+plot(x, main = "t_0 = 10")
+x <-  visielse( X = X, book = book, pixel = 1,  t_0 = "Action1" )
+plot(x, main = "t_0 = Action1")
+```
+
+ Now, we __suppress the drawing__ of the action __1__ and the action __5 green zones__.
+```{r,fig.show='asis',fig.width=7, fig.height=7}
+book_change <- changeShoworder( book, c(2,3,4,5,6) )
+book_change[5,7] <- NA
+book_change[5,8] <- NA
+book_change[5,9] <- NA
+x <-  visielse( X = X, book = book_change, pixel = 1,  t_0 = "Action1" )
+plot(x, main = "t_0 = Action1")
+```
+
+
+### The parameter quantity
+
+ This parameter allows choosing the quantity represented for punctual actions.
+  
+  * N:  __Number of individuals__ is considered.
+  * dens:  __Proportion of individuals__ is considered. This setting is useful when representing groups.  When group is defined and method set to "cut" or "within", this proportion is calculated regarding each represented group.
+  
+```{r,fig.show='asis',fig.width=7, fig.height=7}
+x <-  visielse( X = X, book = book, pixel = 1, Xsup = Xsup )
+plot(x, main = " quantity = N")
+x <-  visielse( X = X, book = book, pixel = 1, Xsup = Xsup,  quantity = "dens" )
+plot(x, main = " quantity = dens")
+```
+
+### Sort long action: sorted.line
+
+The parameter sorted.line allows __long actions to be sorted by starting time__.
+
+```{r,fig.show='asis',fig.width=7, fig.height=7}
+x <-  visielse( X = X, book = book, pixel = 1, Xsup = Xsup )
+plot(x, main = " sorted.line = TRUE")
+x <-  visielse( X = X, book = book, pixel = 1, Xsup = Xsup, sorted.line = FALSE )
+plot(x, main = "sorted.line = FALSE")
+```
+
+## Representing Groups
+
+### Three graphics to represent groups
+
+ViSiElse offers the possibility to represent two groups of individuals, and proposes three graphics to do so using the parameter __method__:
+
+ * cut: Each group will be plotted __apart__ within each action line in the graphic.
+ * join: Groups will be plotted __gathered__ within each action line in the graphic.
+ * within: For each action line in the graphic, there will be two parts, as for the method cut, the difference is that the first line will plot __all individuals__ and the second line will concern individuals belonging to __the group specified__ in the parameter grwithin.
+
+```{r,fig.show='asis',fig.width=7, fig.height=7}
+group = c(rep( "G1", 15),rep("G2",35))
+x <-  visielse( X = X, book = book, pixel = 1, group = group, method = "cut" )
+plot(x, main = " Method = cut ")
+x <-  visielse( X = X, book = book, pixel = 1, group = group, method = "join" )
+plot(x, main = " Method = join ")
+x <-  visielse( X = X, book = book, pixel = 1, group = group, method = "within", 
+                     grwithin = "G1"  )
+plot(x, main = " Method = within ; group1 ")
+x <-  visielse( X = X, book = book, pixel = 1, group = group, method = "within", 
+                     grwithin = "G2", quantity = "dens"  )
+plot(x, main = " Method = within ; group2 / density of ind ")
+```
+
+### Tests
+
+ViSiElse allows applying statistical tests in order __to compare groups__. 
+
+ * When the parameter informer is set to "mean", the function __wilcox.test()__ is used.
+ * When informer is set to "median" the function __mood.test()__ is used.
+
+_
+As for the parameter informer. Tests are computed on the given data.frame X for punctual action. And for a long action it is calculated on its difference between its beginning and ending punctual actions.
+_
+
+Results of the tests are __represented by a star only when the resulted p-value is bellow or equal to the parameter threshold.test__.
+
+
+```{r,fig.show='asis',fig.width=7, fig.height=7}
+x <-  visielse( X = X, book = book, group = group, method = "cut" , pixel = 1, 
+                     tests = TRUE )
+plot(x, main = " test, threshold p-value 0.01")
+x <-  visielse( X = X, book = book, group = group, method = "cut" , pixel = 1, 
+                     tests = TRUE, threshold.test = 0.5  )
+plot(x, main = " test, threshold p-value 0.5")
+```
+
+### Sort long actions: decrgr2
+
+When sorted.line is TRUE, the parameter decrgr2 allows long actions of the second group to be plotted in decreasing order by starting times.
+```{r,fig.show='asis',fig.width=7, fig.height=7}
+x <-  visielse( X = X, book = book, group = group, method = "cut" , pixel = 1, 
+                     Xsup = Xsup )
+plot(x, main = " decrgr2=FALSE")
+x <-  visielse( X = X, book = book, group = group, method = "cut" , pixel = 1, 
+                     Xsup = Xsup, decrgr2 = TRUE )
+plot(x, main = "decrgr2 = TRUE")
+```
+
+------
+### Any question?
+
+
+If you have any request or comment >> https://github.com/CEPOI/ViSiElse
+
+
+...
+
+
+

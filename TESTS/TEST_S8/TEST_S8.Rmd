@@ -1,0 +1,520 @@
+---
+title: "TESTS_DEV - S8 Discrimination en 2 groupes"
+author: "Nastasia Fouret"
+date: "11 mai 2016"
+output: html_document
+---
+
+```{r}
+book <- read.csv2("I:/CEPOI/COMMUN/SIMULATION/ViSElSe/TESTDEV/TEST_S8/data/bookvar4.csv")
+data <- read.csv2("I:/CEPOI/COMMUN/SIMULATION/ViSElSe/TESTDEV/TEST_S8/data/data4.csv")
+group<-data$gr
+data<-data[,-5]
+library(ViSiElse)
+```
+
+# ViSigrid
+
+```{r}
+vi <- visielse( X=data, book=book,pixel=1 )
+```
+
+## En changeant le t0
+
+```{r}
+vi <- visielse( X=data, book=book,pixel=1 , t_0 = "Action1")
+```
+
+## Method Cut : Tests & informers : median
+```{r}
+vi <- visielse( X=data, book=book,pixel=1,tests = TRUE, method = "cut", group=group )
+```
+
+#### Resultat des tests mood
+
+```{r}
+vi@testsP
+vi@informers
+```
+
+##### Action 1
+
+```{r}
+mood.test( (data[which(group==1),2]),   data[which(group==2),2])
+```
+
+##### Action 2
+
+```{r}
+mood.test( (data[which(group==1),3]),   data[which(group==2),3])
+```
+
+##### Action 3
+
+```{r}
+mood.test( (data[which(group==1),4]),   data[which(group==2),4])
+```
+
+##### Action 1 - Action 2 
+
+```{r}
+mood.test( (data[which(group==1),3]-data[which(group==1),2]),   data[which(group==2),3]-data[which(group==2),2])
+```
+
+##### Action 1 - Action 3
+
+```{r}
+mood.test( (data[which(group==1),4]-data[which(group==1),2]),   data[which(group==2),4]-data[which(group==2),2])
+median(data[which(group==2),3]-data[which(group==2),2])
+median( (data[which(group==1),4]-data[which(group==1),2]))
+```
+
+
+
+## Method Join : Tests & informers : median
+```{r}
+vi <- visielse( X=data, book=book,pixel=1,tests = TRUE, method = "join", group=group )
+```
+
+#### Resultat des tests Wilcox
+
+```{r}
+vi@testsP
+vi@informers
+```
+
+##### Action 1
+
+```{r}
+wilcox.test( (data[which(group==1),2]),   data[which(group==2),2])
+```
+
+##### Action 2
+
+```{r}
+wilcox.test( (data[which(group==1),3]),   data[which(group==2),3])
+```
+
+##### Action 3
+
+```{r}
+wilcox.test( (data[which(group==1),4]),   data[which(group==2),4])
+```
+
+##### Action 1 - Action 2
+
+```{r}
+wilcox.test( (data[which(group==1),3]-data[which(group==1),2]),   data[which(group==2),3]-data[which(group==2),2])
+```
+
+##### Action 1 - Action 3
+
+```{r}
+wilcox.test( (data[which(group==1),4]-data[which(group==1),2]),   data[which(group==2),4]-data[which(group==2),2])
+mean(data[which(group==2),3]-data[which(group==2),2])
+mean( (data[which(group==1),4]-data[which(group==1),2]))
+```
+
+
+## Method Within : Tests & informers : median
+```{r}
+vi <- visielse( X=data, book=book, pixel=1,tests = TRUE, method = "within", group=group)
+## 3 individu ont la plus grand valeur a la place de 1
+data <- read.csv2("I:/CEPOI/COMMUN/SIMULATION/ViSElSe/TESTDEV/TEST_S8/data/data7.csv")
+## 1 individu a la plus grande valeur mais ont prend en compte uniquement 3 actions
+vi <- visielse( X=data, book=book, pixel=1,tests = TRUE, method = "within", group=group)
+book <- read.csv2("I:/CEPOI/COMMUN/SIMULATION/ViSElSe/TESTDEV/TEST_S8/data/bookvar8.csv")
+data <- read.csv2("I:/CEPOI/COMMUN/SIMULATION/ViSElSe/TESTDEV/TEST_S8/data/data8.csv")
+
+vi <- visielse( X=data, book=book, pixel=1,tests = TRUE, method = "within", group=group)
+data <- read.csv2("I:/CEPOI/COMMUN/SIMULATION/ViSElSe/TESTDEV/TEST_S8/data/data7.csv")
+vi <- visielse( X=data, book=book, pixel=1,tests = TRUE, method = "within", group=group, doplot = FALSE)
+```
+
+
+#### Resultat des tests mood
+
+```{r}
+vi@testsP
+vi@informers
+```
+
+##### Action 1
+
+```{r}
+mood.test( (data[which(group==1),2]),   data[which(group==2),2])
+```
+
+##### Action 2
+
+```{r}
+mood.test( (data[which(group==1),3]),   data[which(group==2),3])
+```
+
+##### Action 3
+
+```{r}
+mood.test( (data[which(group==1),4]),   data[which(group==2),4])
+```
+
+##### Action 1 - Action 2 
+
+```{r}
+mood.test( (data[which(group==1),3]-data[which(group==1),2]),   data[which(group==2),3]-data[which(group==2),2])
+```
+
+##### Action 1 - Action 3
+
+```{r}
+mood.test( (data[which(group==1),4]-data[which(group==1),2]),   data[which(group==2),4]-data[which(group==2),2])
+median(data[which(group==2),3]-data[which(group==2),2])
+median( (data[which(group==1),4]-data[which(group==1),2]))
+```
+
+
+
+## Method Cut : Tests & informers : Mean
+```{r}
+vi <- visielse( X=data, book=book,pixel=1,tests = TRUE, method = "cut", group=group, informer= "mean")
+```
+
+#### Resultat des tests Wilcox
+
+```{r}
+vi@testsP
+vi@informers
+```
+
+##### Action 1
+
+```{r}
+wilcox.test( (data[which(group==1),2]),   data[which(group==2),2])
+```
+
+##### Action 2
+
+```{r}
+wilcox.test( (data[which(group==1),3]),   data[which(group==2),3])
+```
+
+##### Action 3
+
+```{r}
+wilcox.test( (data[which(group==1),4]),   data[which(group==2),4])
+```
+
+##### Action 1 - Action 2
+
+```{r}
+wilcox.test( (data[which(group==1),3]-data[which(group==1),2]),   data[which(group==2),3]-data[which(group==2),2])
+```
+
+##### Action 1 - Action 3
+
+```{r}
+wilcox.test( (data[which(group==1),4]-data[which(group==1),2]),   data[which(group==2),4]-data[which(group==2),2])
+mean(data[which(group==2),3]-data[which(group==2),2])
+mean( (data[which(group==1),4]-data[which(group==1),2]))
+```
+
+
+
+## Method Join : Tests & informers : Mean
+```{r}
+vi <- visielse( X=data, book=book,pixel=1,tests = TRUE, method = "join", group=group, informer= "mean")
+```
+
+
+#### Resultat des tests Wilcox
+
+```{r}
+vi@testsP
+vi@informers
+```
+
+##### Action 1
+
+```{r}
+wilcox.test( (data[which(group==1),2]),   data[which(group==2),2])
+```
+
+##### Action 2
+
+```{r}
+wilcox.test( (data[which(group==1),3]),   data[which(group==2),3])
+```
+
+##### Action 3
+
+```{r}
+wilcox.test( (data[which(group==1),4]),   data[which(group==2),4])
+```
+
+##### Action 1 - Action 2
+
+```{r}
+wilcox.test( (data[which(group==1),3]-data[which(group==1),2]),   data[which(group==2),3]-data[which(group==2),2])
+```
+
+##### Action 1 - Action 3
+
+```{r}
+wilcox.test( (data[which(group==1),4]-data[which(group==1),2]),   data[which(group==2),4]-data[which(group==2),2])
+mean(data[which(group==2),3]-data[which(group==2),2])
+mean( (data[which(group==1),4]-data[which(group==1),2]))
+```
+
+
+
+## Method Within : Tests & informers : Mean
+```{r}
+vi <- visielse( X=data, book=book,pixel=1,tests = TRUE, method = "within", group=group, informer= "mean")
+```
+
+
+#### Resultat des tests Wilcox
+
+```{r}
+vi@testsP
+vi@informers
+```
+
+##### Action 1
+
+```{r}
+wilcox.test( (data[which(group==1),2]),   data[which(group==2),2])
+```
+
+##### Action 2
+
+```{r}
+wilcox.test( (data[which(group==1),3]),   data[which(group==2),3])
+```
+
+##### Action 3
+
+```{r}
+wilcox.test( (data[which(group==1),4]),   data[which(group==2),4])
+```
+
+##### Action 1 - Action 2
+
+```{r}
+wilcox.test( (data[which(group==1),3]-data[which(group==1),2]),   data[which(group==2),3]-data[which(group==2),2])
+```
+
+##### Action 1 - Action 3
+
+```{r}
+wilcox.test( (data[which(group==1),4]-data[which(group==1),2]),   data[which(group==2),4]-data[which(group==2),2])
+mean(data[which(group==2),3]-data[which(group==2),2])
+mean( (data[which(group==1),4]-data[which(group==1),2]))
+```
+
+
+
+## Method Cut : Tests & informers : Median
+```{r}
+vi <- visielse( X = data, book = book, group = group, method = "cut", pixel = 1, test = TRUE )
+vi@informers
+```
+
+
+#### Resultat des tests mood
+
+```{r}
+vi@testsP
+vi@informers
+```
+
+##### Action 1
+
+```{r}
+mood.test( (data[which(group==1),2]),   data[which(group==2),2])
+```
+
+##### Action 2
+
+```{r}
+mood.test( (data[which(group==1),3]),   data[which(group==2),3])
+```
+
+##### Action 3
+
+```{r}
+mood.test( (data[which(group==1),4]),   data[which(group==2),4])
+```
+
+##### Action 1 - Action 2 
+
+```{r}
+mood.test( (data[which(group==1),3]-data[which(group==1),2]),   data[which(group==2),3]-data[which(group==2),2])
+```
+
+##### Action 1 - Action 3
+
+```{r}
+mood.test( (data[which(group==1),4]-data[which(group==1),2]),   data[which(group==2),4]-data[which(group==2),2])
+median(data[which(group==2),3]-data[which(group==2),2])
+median( (data[which(group==1),4]-data[which(group==1),2]))
+```
+
+
+
+## Method Join : Tests & informers : Median
+```{r}
+vi <- visielse( X = data, book = book, group = group, method = "join", pixel = 1, test = TRUE )
+vi@informers
+```
+
+#### Resultat des tests mood
+
+```{r}
+vi@testsP
+vi@informers
+```
+
+##### Action 1
+
+```{r}
+mood.test( (data[which(group==1),2]),   data[which(group==2),2])
+```
+
+##### Action 2
+
+```{r}
+mood.test( (data[which(group==1),3]),   data[which(group==2),3])
+```
+
+##### Action 3
+
+```{r}
+mood.test( (data[which(group==1),4]),   data[which(group==2),4])
+```
+
+##### Action 1 - Action 2 
+
+```{r}
+mood.test( (data[which(group==1),3]-data[which(group==1),2]),   data[which(group==2),3]-data[which(group==2),2])
+```
+
+##### Action 1 - Action 3
+
+```{r}
+mood.test( (data[which(group==1),4]-data[which(group==1),2]),   data[which(group==2),4]-data[which(group==2),2])
+median(data[which(group==2),3]-data[which(group==2),2])
+median( (data[which(group==1),4]-data[which(group==1),2]))
+```
+
+
+
+## Method Within : Tests & informers : Median
+```{r}
+vi <- visielse( X = data, book = book, group = group, method = "within", pixel = 1, test =TRUE)
+```
+
+
+#### Resultat des tests mood
+
+```{r}
+vi@testsP
+vi@informers
+```
+
+##### Action 1
+
+```{r}
+mood.test( (data[which(group==1),2]),   data[which(group==2),2])
+```
+
+##### Action 2
+
+```{r}
+mood.test( (data[which(group==1),3]),   data[which(group==2),3])
+```
+
+##### Action 3
+
+```{r}
+mood.test( (data[which(group==1),4]),   data[which(group==2),4])
+```
+
+##### Action 1 - Action 2 
+
+```{r}
+mood.test( (data[which(group==1),3]-data[which(group==1),2]),   data[which(group==2),3]-data[which(group==2),2])
+```
+
+##### Action 1 - Action 3
+
+```{r}
+mood.test( (data[which(group==1),4]-data[which(group==1),2]),   data[which(group==2),4]-data[which(group==2),2])
+median(data[which(group==2),3]-data[which(group==2),2])
+median( (data[which(group==1),4]-data[which(group==1),2]))
+```
+
+
+
+## Method Join : Tests & informers : Median
+```{r}
+vi <- visielse( X = data, book = book, group = group, method = "join" )
+```
+
+
+#### Resultat des tests mood
+
+```{r}
+vi@testsP
+vi@informers
+```
+
+##### Action 1
+
+```{r}
+mood.test( (data[which(group==1),2]),   data[which(group==2),2])
+```
+
+##### Action 2
+
+```{r}
+mood.test( (data[which(group==1),3]),   data[which(group==2),3])
+```
+
+##### Action 3
+
+```{r}
+mood.test( (data[which(group==1),4]),   data[which(group==2),4])
+```
+
+##### Action 1 - Action 2 
+
+```{r}
+mood.test( (data[which(group==1),3]-data[which(group==1),2]),   data[which(group==2),3]-data[which(group==2),2])
+```
+
+##### Action 1 - Action 3
+
+```{r}
+mood.test( (data[which(group==1),4]-data[which(group==1),2]),   data[which(group==2),4]-data[which(group==2),2])
+median(data[which(group==2),3]-data[which(group==2),2])
+median( (data[which(group==1),4]-data[which(group==1),2]))
+```
+
+
+# Changement de t_0
+## Method cut 
+```{r}
+vi <- visielse( X = data, book = book, t_0="Action1" , pixel=2)
+vi <- visielse( X = data, book = book , pixel=2)
+vi <- visielse( X = data, book = book, group = group, method = "cut" , pixel=2 , t_0="Action2")
+```
+
+## Method join
+```{r}
+vi <- visielse( X = data, book = book, group = group, method = "join" , pixel=2 , t_0="Action2")
+```
+
+## Method within
+```{r}
+vi <- visielse( X = data, book = book, group = group, method = "within" , pixel=2 , t_0="Action2")
+```
